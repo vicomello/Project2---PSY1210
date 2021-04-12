@@ -1,0 +1,306 @@
+---
+title: "Data Analysis and Visualization"
+author: "Victoria Oldemburgo de Mello"
+date: "10/04/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## The research project
+In this research project, we wanted to understand how **social media use** is related to **well-being** and **political polarization**.
+
+Because researchers have failed to find relationships between overall social media use (measured in time) and the dependent variables, I decided to approach the question such that social media use could be divided into different types of uses. I wanted to investigate, for instance, if using social media to connect with friends would be any different from using social media to check for news.
+
+To measure the different types of social media use, I created a scale "functions of social media use". After performing a factor analysis, the scale ended up divided into five factors:
+- Interacting: Using social media to connect with a community, sharing information with people. 
+- Information Seeking: Using social media for shopping, finding information about businesses, news consumption.
+- Relaxation: Using social media to distract oneself from stressful events, as a coping mechanism.
+- Entertainment: Using social media to find fun content, to have fun.
+- Commercial: Using social media to promote one's own brand or oneself. 
+
+## Hypotheses
+We had 4 main hypotheses to test in this study.
+
+#### 1) Individual traits will be linked to social media use.
+We expect that personality traits will be related to different functions of social media use.
+
+#### 2) Using social media for news consumption will be positively associated with polarization.
+
+#### 3) Dispositional states will be related to social media.
+We expect that boredom, loneliness, and self-esteem will be related to social media use. 
+
+#### 4) Using social media actively or passively will be associated with well-being.
+We expect that using social media actively will hold a positive relationship with well-being while using it passively will hold a negative relationship.
+
+
+
+```{r, echo=FALSE}
+library(tidyverse)
+
+setwd('C:/Users/Artur/OneDrive - University of Toronto/Desktop/thesis -docs/Study 1')
+df <- read.csv("clean_dataset.csv")
+
+df1 <- df # keeping the original df intact in case I need it later
+```
+
+### Investigating First hypothesis: Individual Traits x Social Media Use
+Because we have 297 observations, all correlations larger than 0.114 will be significant (p<=0.05).
+To simplify, we will only run the estimate parameter of each correlation.
+
+```{r}
+##### EXTRAVERSION AND FUNCTIONS: CORRELATIONS #####
+cor.test(df1$extraversion, df1$interacting)$estimate # sig
+cor.test(df1$extraversion, df1$commercial)$estimate  # sig
+cor.test(df1$extraversion, df1$relaxation)$estimate  #N.S
+cor.test(df1$extraversion, df1$entertainment)$estimate  #N.S
+cor.test(df1$extraversion, df1$info_seeking)$estimate  #sig
+
+##### EXTRAVERSION AND FUNCTIONS: VISUALIZING THE SIGNIFICANT RELATIONSHIPS #####
+fig1 <- ggplot(df1, aes(x=extraversion, y=interacting))
+fig1 + geom_point() + geom_smooth(method = "lm")
+
+fig2 <- ggplot(df1, aes(x=extraversion, y=commercial))
+fig2 + geom_point() + geom_smooth(method = "lm")
+
+fig3 <- ggplot(df1, aes(x=extraversion, y=info_seeking))
+fig3 + geom_point() + geom_smooth(method = "lm")
+
+##### AGREEABLENESS AND FUNCTIONS: CORRELATIONS #####
+cor.test(df1$agreeableness, df1$interacting)$estimate  #sig
+cor.test(df1$agreeableness, df1$commercial)$estimate  #N.S.
+cor.test(df1$agreeableness, df1$relaxation)$estimate  #N.S
+cor.test(df1$agreeableness, df1$entertainment)$estimate  #N.S
+cor.test(df1$agreeableness, df1$info_seeking)$estimate  #N.S
+
+##### AGREEABLENESS AND FUNCTIONS: VISUALIZING THE SIGNIFICANT RELATIONSHIPS #####
+fig4 <- ggplot(df1, aes(x=agreeableness, y=interacting))
+fig4 + geom_point() + geom_smooth(method = "lm")
+
+##### OPENNESS AND FUNCTIONS #####
+cor.test(df1$openness, df1$interacting)$estimate  #sig
+cor.test(df1$openness, df1$commercial)$estimate  #sig
+cor.test(df1$openness, df1$relaxation)$estimate  #N.S.
+cor.test(df1$openness, df1$entertainment)$estimate  #N.S
+cor.test(df1$openness, df1$info_seeking)$estimate  #sig
+
+##### OPENNESS AND FUNCTIONS: VISUALIZING THE SIGNIFICANT RELATIONSHIPS #####
+
+fig5 <- ggplot(df1, aes(x = openness, y = interacting))
+fig5 + geom_point() + geom_smooth(method = 'lm')
+
+fig6 <- ggplot(df1, aes(x = openness, y = commercial))
+fig6 + geom_point() + geom_smooth(method = 'lm')
+
+fig7 <- ggplot(df1, aes(x = openness, y = info_seeking))
+fig7 + geom_point() + geom_smooth(method = 'lm')
+
+##### NEUROTICISM AND FUNCTIONS:CORRELATIONS #####
+cor.test(df1$neuroticism, df1$interacting)$estimate  #N.S.
+cor.test(df1$neuroticism, df1$commercial)$estimate  #N.S.
+cor.test(df1$neuroticism, df1$relaxation)$estimate  #sig
+cor.test(df1$neuroticism, df1$entertainment)$estimate  #sig
+cor.test(df1$neuroticism, df1$info_seeking)$estimate  #N.S
+
+##### NEUROTICISM AND FUNCTIONS: VISUALIZING THE SIGNIFICANT RELATIONSHIPS #####
+fig8 <- ggplot(df1, aes(x = neuroticism, y = relaxation))
+fig8 + geom_point() + geom_smooth(method = 'lm')
+
+fig9 <- ggplot(df1, aes(x = neuroticism, y = entertainment))
+fig9 + geom_point() + geom_smooth(method = 'lm')
+
+##### CONSCIENTIOUSNESS AND FUNCTIONS: CORRELATIONS #####
+cor.test(df1$conscientiousness, df1$interacting)$estimate  #N.S.
+cor.test(df1$conscientiousness, df1$commercial)$estimate  #N.S.
+cor.test(df1$conscientiousness, df1$relaxation)$estimate  #negative sig
+cor.test(df1$conscientiousness, df1$entertainment)$estimate  #N.S.
+cor.test(df1$conscientiousness, df1$info_seeking)$estimate  #N.S.
+
+##### CONSCIENTIOUSNESS AND FUNCTIONS: VISUALIZING THE SIGNIFICANT RELATIONSHIPS #####
+fig10 <- ggplot(df1, aes(x = conscientiousness, y = relaxation))
+fig10 + geom_point() + geom_smooth(method = 'lm')
+
+```
+
+### Second Hypothesis: News consumption x Polarization
+```{r}
+cor.test(df1$news_socialmedia, df1$polarization)
+# the correlation between using social media for news consumption and polarization
+# was not significant.
+
+# However, the correlation was significant for other news sources (newspaper and cable tv):
+cor.test(df1$news_newspaper, df1$polarization)$estimate
+cor.test(df1$news_cabletv, df1$polarization)$estimate
+
+# So maybe there is an overall relationship between news consumption and polarization?
+# Let's see:
+cor.test(df1$news_cons_freq, df1$polarization)
+# Yes, that seems to be the case.
+
+fig11 <- ggplot(df1, aes(x = news_cons_freq, y = polarization))
+fig11 + geom_point() + geom_smooth(method = 'lm')
+```
+
+### Third Hypothesis: Dispositional Traits x Overall Social Media Use
+```{r}
+# 1) correlations with single variables
+
+cor.test(df1$total_use, df1$boredom) #sig
+cor.test(df1$total_use, df1$loneliness) #N.S.
+cor.test(df1$total_use, df1$self_esteem) #N.S
+
+lm1 <- lm(total_use ~ boredom, data = df1)
+summary(lm1)
+
+lm2 <- lm(total_use ~ boredom + loneliness, data = df1)
+summary(lm2)
+
+lm3 <- lm(total_use ~ boredom + loneliness + self_esteem, data = df1)
+summary(lm3)
+
+# Are there interaction effects?
+summary(lm(total_use ~ boredom*loneliness, data = df1)) #N.S
+summary(lm(total_use ~ boredom*self_esteem, data = df1)) #N.S
+summary(lm(total_use ~ loneliness*self_esteem, data = df1)) #N.S.
+
+# Only boredom helped predict social media use.
+
+fig12 <- ggplot(df1, aes(x = total_use, y = boredom))
+fig12 + geom_point() + geom_smooth(method = 'lm')
+```
+
+### Fourth Hypothesis: Well being and active x passive use
+Passive uses:
+```{r}
+# Let's go step by step
+
+# Sanity check: is satisfaction with life predicted by boredom, loneliness, and self-esteem?
+lm4 <- lm(sats_w_life ~ boredom + loneliness + self_esteem, data = df1)
+summary(lm4)
+# Yes, and that's expected. 
+
+# 1) Is satisfaction with life predicted by social media use (overall time)?
+lm5 <- lm(sats_w_life ~ total_use, data = df1)
+summary(lm5)
+# No, and not expected (according to previous findings)
+
+# 2) Is satisfaction with life predicted by smartphone use?
+summary(lm(sats_w_life ~ smartphone_SM_daily, data = df1))
+# No.
+
+# 3) Is satisfaction with life predicted by passive social media use?
+# Passive uses: relaxation.
+# Uncertain: entertainment, info_seeking
+# Active uses: interacting or commercial. 
+
+# a) relaxation
+summary(lm(sats_w_life ~relaxation, data = df1))
+# Using social media to relax (distraction) predicts negative changes in well-being.
+
+# b) relaxation and entertainment
+summary(lm(sats_w_life~relaxation + entertainment, data = df1))
+# Using social media for entertainment as a variable didn't help in our model.
+
+# c) relaxation and info_seeking
+summary(lm(sats_w_life~relaxation + info_seeking, data = df1))
+# Yeah, it seems that sats with life is predicted negatively by relaxation and positively
+# by information seeking.
+
+# d) relaxation and commercial ends
+summary(lm(sats_w_life~relaxation + commercial, data = df1))
+# Yes. Negative for sats with life and positive for commercial ends.
+
+# e) relaxation, info_seeking, commercial ends
+summary(lm(sats_w_life~relaxation + info_seeking + commercial, data = df1))
+# relaxation and info_seeking remained significant, but not commercial.
+```
+
+ Is well-being predicted by active social media use?
+``` {r}
+# a) interacting
+summary(lm(sats_w_life ~interacting, data = df1))
+# yes, positively by interacting on social media.
+
+# b) commercial
+summary(lm(sats_w_life ~ commercial, data = df1))
+# yes, positively by using it for commercial ends (self-promotion).
+
+# c) interacting and commercial
+summary(lm(sats_w_life ~interacting + commercial, data = df1))
+# nope, both interacting lost significance when commercial was added.
+
+##### Testing full models to predict well-being based on functions of uses #####
+
+cor.test(df1$interacting, df1$relaxation)
+# interacting and relaxation are moderately correlated positively
+
+summary(lm(sats_w_life~relaxation + interacting, data = df1))
+# in this model, relaxation (using social media as coping mechanism) predicted
+# sats with life negatively while interacted predicted it positively! which is
+# surprising, given that they are positively correlated
+
+summary(lm(sats_w_life~relaxation + interacting + info_seeking, data = df1))
+# adding info_seeking didn't add much to the variance explained, but was also significant.
+
+# Is there an interaction effect between the two main predictors?
+summary(lm(sats_w_life~relaxation*interacting, data=df1))
+# No. 
+
+# Let's plot it!
+# Preparing the data to plot the multiple regression: 
+
+a <- df1 %>% 
+  select(sats_w_life,relaxation) %>% 
+  mutate(variable = 'relaxation') %>% 
+  dplyr::rename(
+    score = relaxation
+  )
+
+b <- df1 %>% 
+  select(sats_w_life, interacting) %>% 
+  mutate(variable = 'interacting') %>% 
+  dplyr::rename(
+    score=interacting
+  )
+c <- rbind(a, b)
+summary(c)
+c$variable <- as.factor(c$variable)
+
+fig13 <- ggplot(c, aes(y = sats_w_life, x = score, color = variable))
+fig13 + geom_point() + geom_smooth(method = 'lm')
+
+```
+
+
+### Testing for possible mediators or moderators
+```{r}
+# Satisfaction and and interacting (moderated by sense of belonging)
+summary(lm(sats_w_life ~ interacting + sense_community_online, data = df1))
+# yeah, the effect seems to be mediated by sense of community. 
+
+summary(lm(sats_w_life~relaxation + neuroticism, data = df1))
+# yeah, the effect seems to be mediated by neuroticism
+
+summary(lm(sats_w_life ~ interacting + agreeableness, data = df1))
+# yeah, the effect seems to be mediated by agreeableness
+
+# what about interacting between functions and usage time?
+summary(lm(sats_w_life~ interacting*total_use, data = df1))
+# Not significant
+
+# let's redo the models controling for age and gender:
+summary(lm(sats_w_life ~ relaxation + interacting + age, data = df1))
+# no effect for age
+
+df1$Sex <- recode(df1$Sex, Male = 1, Female = 2)
+summary(lm(sats_w_life ~ relaxation + interacting + Sex, data = df1))
+# no effect for gender
+
+```
+
+
+
+
+
+
