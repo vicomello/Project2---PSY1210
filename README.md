@@ -1,5 +1,5 @@
 # Project2---PSY1210
-### Victoria Oldemburgo de Mello
+#### Author: Victoria Oldemburgo de Mello
 
 This project aims at analyzing the relationship from social media use, well-being, 
 and polarization with cross-sectional data. 
